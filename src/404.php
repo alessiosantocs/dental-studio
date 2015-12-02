@@ -1,24 +1,45 @@
 <?php get_header(); ?>
 
-	<main role="main">
-		<!-- section -->
-		<section>
+	<div class="page-header">
+		<div class="container">
+			<h1><?php _e( 'Page not found', 'woopstrapblank' ); ?></h1>
+		</div>
+	</div>
 
-			<!-- article -->
-			<article id="post-404">
 
-				<h1><?php _e( 'Page not found', 'woopstrapblank' ); ?></h1>
-				<h2>
-					<a href="<?php echo home_url(); ?>"><?php _e( 'Return home?', 'woopstrapblank' ); ?></a>
-				</h2>
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- col-md-9 -->
+				<div class="col-md-9">
 
-			</article>
-			<!-- /article -->
+					<!-- article -->
+					<div id="post-404" class="article">
 
-		</section>
-		<!-- /section -->
-	</main>
+						<h2>
+							<a href="<?php echo home_url(); ?>"><?php _e( 'Return home?', 'woopstrapblank' ); ?></a>
+						</h2>
 
-<?php get_sidebar(); ?>
+					</div>
+					<!-- /article -->
+
+				</div>
+				<!-- /col-md-9 -->
+
+				<!-- col-md-3 -->
+				<div class="col-md-3">
+					<?php get_sidebar(); ?>
+				</div>
+				<!-- /col-md-3 -->
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
 
 <?php get_footer(); ?>

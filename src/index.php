@@ -6,18 +6,34 @@
 		</div>
 	</div>
 
-	<main role="main" class="container">
-		<!-- section -->
-		<section>
 
-			<?php get_template_part('loop'); ?>
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- col-md-9 -->
+				<div class="col-md-9">
 
-			<?php get_template_part('pagination'); ?>
+					<?php get_template_part('loop'); ?>
 
-		</section>
-		<!-- /section -->
-	</main>
+					<?php get_template_part('pagination'); ?>
 
-<?php get_sidebar(); ?>
+				</div>
+				<!-- /col-md-9 -->
+
+				<!-- /col-md-3 -->
+				<div class="col-md-3">
+					<?php get_sidebar(); ?>
+				</div>
+				<!-- /col-md-3 -->
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
 
 <?php get_footer(); ?>

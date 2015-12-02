@@ -7,7 +7,7 @@
 
 <?php if (have_comments()) : ?>
 
-	<h2><?php comments_number(); ?></h2>
+	<h3><?php comments_number(); ?></h3>
 
 	<ul>
 		<?php wp_list_comments('type=comment&callback=woopstrapblankcomments'); // Custom callback in functions.php ?>

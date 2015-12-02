@@ -47,7 +47,7 @@
 					<!-- /navbar-header -->
 
 					<!-- nav -->
-					<nav id="woopstrapblank-nav-menu" class="collapse navbar-collapse" role="navigation">
+					<nav id="woopstrapblank-nav-menu" class="collapse navbar-collapse pull-right" role="navigation">
 						<?php woopstrapblank_nav(); ?>
 					</nav>
 					<!-- /nav -->

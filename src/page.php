@@ -6,44 +6,60 @@
 		</div>
 	</div>
 
-	<main role="main">
-		<!-- section -->
-		<section>
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- col-md-9 -->
+				<div class="col-md-9">
 
-		<?php if (have_posts()): while (have_posts()) : the_post(); ?>
+					<?php if (have_posts()): while (have_posts()) : the_post(); ?>
 
-			<!-- article -->
-			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+						<!-- article -->
+						<div class="article" id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
 
-				<?php the_content(); ?>
+							<?php the_content(); ?>
 
-				<?php comments_template( '', true ); // Remove if you don't want comments ?>
+							<?php comments_template( '', true ); // Remove if you don't want comments ?>
 
-				<br class="clear">
+							<br class="clear">
 
-				<?php edit_post_link(); ?>
+							<?php edit_post_link(); ?>
 
-			</article>
-			<!-- /article -->
+						</div>
+						<!-- /article -->
 
-		<?php endwhile; ?>
+					<?php endwhile; ?>
 
-		<?php else: ?>
+					<?php else: ?>
 
-			<!-- article -->
-			<article>
+						<!-- article -->
+						<div class="article">
 
-				<h3><?php _e( 'Sorry, nothing to display.', 'woopstrapblank' ); ?></h3>
+							<h3><?php _e( 'Sorry, nothing to display.', 'woopstrapblank' ); ?></h3>
 
-			</article>
-			<!-- /article -->
+						</div>
+						<!-- /article -->
 
-		<?php endif; ?>
+					<?php endif; ?>
 
-		</section>
-		<!-- /section -->
-	</main>
+				</div>
+				<!-- /col-md-9 -->
 
-<?php get_sidebar(); ?>
+				<!-- col-md-3 -->
+				<div class="col-md-3">
+					<?php get_sidebar(); ?>
+				</div>
+				<!-- /col-md-3 -->
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
+
 
 <?php get_footer(); ?>

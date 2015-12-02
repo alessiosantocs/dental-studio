@@ -1,81 +1,101 @@
 <?php get_header(); ?>
 
-	<main role="main">
-		<!-- section -->
-		<section>
-
-		<?php if (have_posts()): the_post(); ?>
-
+	<div class="page-header">
+		<div class="container">
 			<h1><?php _e( 'Author Archives for ', 'woopstrapblank' ); echo get_the_author(); ?></h1>
+		</div>
+	</div>
 
-		<?php if ( get_the_author_meta('description')) : ?>
 
-		<?php echo get_avatar(get_the_author_meta('user_email')); ?>
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- col-md-9 -->
+				<div class="col-md-9">
 
-			<h2><?php _e( 'About ', 'woopstrapblank' ); echo get_the_author() ; ?></h2>
+					<?php if (have_posts()): the_post(); ?>
 
-			<?php echo wpautop( get_the_author_meta('description') ); ?>
+					<?php if ( get_the_author_meta('description')) : ?>
 
-		<?php endif; ?>
+					<?php echo get_avatar(get_the_author_meta('user_email')); ?>
 
-		<?php rewind_posts(); while (have_posts()) : the_post(); ?>
+						<h3><?php _e( 'About ', 'woopstrapblank' ); echo get_the_author() ; ?></h3>
 
-			<!-- article -->
-			<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+						<?php echo wpautop( get_the_author_meta('description') ); ?>
 
-				<!-- post thumbnail -->
-				<?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>
-					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
-						<?php the_post_thumbnail(array(120,120)); // Declare pixel size you need inside the array ?>
-					</a>
-				<?php endif; ?>
-				<!-- /post thumbnail -->
+					<?php endif; ?>
 
-				<!-- post title -->
-				<h2>
-					<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
-				</h2>
-				<!-- /Post title -->
+					<?php rewind_posts(); while (have_posts()) : the_post(); ?>
 
-				<!-- post details -->
-				<span class="date">
-					<time datetime="<?php the_time('Y-m-d'); ?> <?php the_time('H:i'); ?>">
-						<?php the_date(); ?> <?php the_time(); ?>
-					</time>
-				</span>
-				<span class="author"><?php _e( 'Published by', 'woopstrapblank' ); ?> <?php the_author_posts_link(); ?></span>
-				<span class="comments"><?php comments_popup_link( __( 'Leave your thoughts', 'woopstrapblank' ), __( '1 Comment', 'woopstrapblank' ), __( '% Comments', 'woopstrapblank' )); ?></span>
-				<!-- /post details -->
+						<!-- article -->
+						<div id="post-<?php the_ID(); ?>" <?php post_class('article'); ?>>
 
-				<?php html5wp_excerpt('html5wp_index'); // Build your custom callback length in functions.php ?>
+							<!-- post thumbnail -->
+							<?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>
+								<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
+									<?php the_post_thumbnail(array(120,120)); // Declare pixel size you need inside the array ?>
+								</a>
+							<?php endif; ?>
+							<!-- /post thumbnail -->
 
-				<br class="clear">
+							<!-- post title -->
+							<h3>
+								<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
+							</h3>
+							<!-- /Post title -->
 
-				<?php edit_post_link(); ?>
+							<!-- post details -->
+							<span class="date">
+								<time datetime="<?php the_time('Y-m-d'); ?> <?php the_time('H:i'); ?>">
+									<?php the_date(); ?> <?php the_time(); ?>
+								</time>
+							</span>
+							<span class="author"><?php _e( 'Published by', 'woopstrapblank' ); ?> <?php the_author_posts_link(); ?></span>
+							<span class="comments"><?php comments_popup_link( __( 'Leave your thoughts', 'woopstrapblank' ), __( '1 Comment', 'woopstrapblank' ), __( '% Comments', 'woopstrapblank' )); ?></span>
+							<!-- /post details -->
 
-			</article>
-			<!-- /article -->
+							<?php html5wp_excerpt('html5wp_index'); // Build your custom callback length in functions.php ?>
 
-		<?php endwhile; ?>
+							<br class="clear">
 
-		<?php else: ?>
+							<?php edit_post_link(); ?>
 
-			<!-- article -->
-			<article>
+						</div>
+						<!-- /article -->
 
-				<h2><?php _e( 'Sorry, nothing to display.', 'woopstrapblank' ); ?></h2>
+					<?php endwhile; ?>
 
-			</article>
-			<!-- /article -->
+					<?php else: ?>
 
-		<?php endif; ?>
+						<!-- article -->
+						<div class="article">
 
-			<?php get_template_part('pagination'); ?>
+							<h3><?php _e( 'Sorry, nothing to display.', 'woopstrapblank' ); ?></h3>
 
-		</section>
-		<!-- /section -->
-	</main>
+						</div>
+						<!-- /article -->
 
-<?php get_sidebar(); ?>
+					<?php endif; ?>
+
+						<?php get_template_part('pagination'); ?>
+
+				</div>
+				<!-- /col-md-9 -->
+
+				<!-- col-md-3 -->
+				<div class="col-md-3">
+					<?php get_sidebar(); ?>
+				</div>
+				<!-- /col-md-3 -->
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
 
 <?php get_footer(); ?>
