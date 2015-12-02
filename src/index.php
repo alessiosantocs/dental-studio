@@ -1,10 +1,14 @@
 <?php get_header(); ?>
 
-	<main role="main">
+	<div class="page-header">
+		<div class="container">
+			<h1><?php _e( 'Latest Posts', 'woopstrapblank' ); ?></h1>
+		</div>
+	</div>
+
+	<main role="main" class="container">
 		<!-- section -->
 		<section>
-
-			<h1><?php _e( 'Latest Posts', 'html5blank' ); ?></h1>
 
 			<?php get_template_part('loop'); ?>
 

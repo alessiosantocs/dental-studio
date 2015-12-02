@@ -13,6 +13,8 @@ var gulp = require( "gulp" ),
 		"src/js/lib/conditionizr-4.3.0.min.js",
 		/** jQuery */
 		"src/bower_components/jquery/dist/jquery.js",
+		/** Bootstrap */
+		"src/bower_components/bootstrap-sass/assets/javascript/bootstrap.min.js",
 		/** Page scripts */
 		"src/js/scripts.js"
 	],
@@ -150,9 +152,11 @@ gulp.task( "watch", [ "template", "styles", "jshint" ], function() {
 
 	/** Watch for autoprefix */
 	gulp.watch( [
-		"src/css/*.css",
 		"src/css/sass/**/*.scss"
-	], [ "styles" ] );
+	], [ "styles" ] )
+	.on('change', function(event) {
+		console.log('File ' + event.path + ' was ' + event.type + ', running tasks...');
+	});
 
 	/** Watch for JSHint */
 	gulp.watch( "src/js/{!(lib)/*.js,*.js}", ["jshint"] );

@@ -1,10 +1,14 @@
 <?php get_header(); ?>
 
+	<div class="page-header">
+		<div class="container">
+			<h1><?php the_title(); ?></h1>
+		</div>
+	</div>
+
 	<main role="main">
 		<!-- section -->
 		<section>
-
-			<h1><?php the_title(); ?></h1>
 
 		<?php if (have_posts()): while (have_posts()) : the_post(); ?>
 
@@ -29,7 +33,7 @@
 			<!-- article -->
 			<article>
 
-				<h2><?php _e( 'Sorry, nothing to display.', 'html5blank' ); ?></h2>
+				<h3><?php _e( 'Sorry, nothing to display.', 'woopstrapblank' ); ?></h3>
 
 			</article>
 			<!-- /article -->

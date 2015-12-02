@@ -11,7 +11,6 @@
 
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="description" content="<?php bloginfo('description'); ?>">
 
 		<?php wp_head(); ?>
 		<script>
@@ -26,26 +25,33 @@
 	</head>
 	<body <?php body_class(); ?>>
 
-		<!-- wrapper -->
-		<div class="wrapper">
+		<!-- #main-container -->
+		<div id="main-container">
 
 			<!-- header -->
-			<header class="header clear" role="banner">
+			<header class="navbar navbar-static-top navbar-woopstrapblank" id="top" role="banner">
 
-					<!-- logo -->
-					<div class="logo">
-						<a href="<?php echo home_url(); ?>">
-							<!-- svg logo - toddmotto.com/mastering-svg-use-for-a-retina-web-fallbacks-with-png-script -->
-							<img src="<?php echo get_template_directory_uri(); ?>/img/logo.svg" alt="Logo" class="logo-img">
+				<div class="container">
+					<!-- navbar-header -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#woopstrapblank-nav-menu" aria-expanded="false">
+			        <span class="sr-only">Toggle navigation</span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			        <span class="icon-bar"></span>
+			      </button>
+						<a href="<?php echo home_url(); ?>" class="navbar-brand">
+							<?php wp_title(); ?>
 						</a>
 					</div>
-					<!-- /logo -->
+					<!-- /navbar-header -->
 
 					<!-- nav -->
-					<nav class="nav" role="navigation">
-						<?php html5blank_nav(); ?>
+					<nav id="woopstrapblank-nav-menu" class="collapse navbar-collapse" role="navigation">
+						<?php woopstrapblank_nav(); ?>
 					</nav>
 					<!-- /nav -->
+				</div>
 
 			</header>
 			<!-- /header -->

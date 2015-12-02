@@ -4,6 +4,9 @@
  * Main `sass` file. Import here `sass` files
  */
 
+// Bootstrap
+@import "modules/bootstrap";
+
 // Modules
 @import "modules/variables";
 @import "modules/mixins";
