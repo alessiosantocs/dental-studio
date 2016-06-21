@@ -46,7 +46,7 @@
 
   & img {
     width: auto;
-    max-width: 98.5%;
+    max-width: 100%;
     height: auto;
     border: 0 none;
 
@@ -56,8 +56,13 @@
 
 .wp-caption .wp-caption-text,
 .gallery-caption {
-  margin: 0;
-  padding: 0 $padding-horizontal-base $padding-vertical-base;
-  font-size: $font-size-base;
-  line-height: $line-height-base;
+  margin: 10px 0px 5px 0px;
+  padding: 0;
+  font-size: 13px;
+}
+
+
+
+img[class*=wp-image-]{
+  @extend .thumbnail;
 }

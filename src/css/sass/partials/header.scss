@@ -3,11 +3,576 @@
  * ---
  */
 
+// $navbar
+
+$site-areas-navbar-height: 50px;
+$site-areas-link-size: 13px;
+$site-areas-link-transform: uppercase;
 
 // Header container
-.header {}
+.navbar {
+
+  // .navbar-dental-studio-site-areas
+  &.navbar-dental-studio-site-areas{
+    display: none;
+    min-height: $site-areas-navbar-height;
+    background: #FCFCFE;
+
+    @if ($should-navbar-position-top) {
+      @extend .navbar-fixed-top;
+    }@else{
+      margin-bottom: 0;
+    }
+
+    @media (min-width: $screen-sm-min){
+      display: block;
+    }
+
+    nav > ul.nav{
+
+      @media (max-width: $mobile_breakpoint){
+        // Stuff only for mobile
+        margin-top: 0;
+        margin-bottom: 0;
+      }
+
+      >li{
+
+        float: left;
+
+        @media (min-width: $mobile_breakpoint){
+          // Stuff for desktops
+        }
+
+        >a{
+          font-size: $site-areas-link-size;
+          line-height: $site-areas-link-size;
+          padding-top: ($site-areas-navbar-height - $site-areas-link-size) / 2;
+          padding-bottom: ($site-areas-navbar-height - $site-areas-link-size) / 2;
+
+          background: transparent;
+
+          text-transform: $site-areas-link-transform;
+
+          color: $navbar-main-link-color;
+
+          &:hover{
+            background: transparent;
+          }
+
+          &:before{
+            position: absolute;
+            left: 0px;
+            top: ($site-areas-navbar-height - 25px) / 2 - 2px;
+          }
+        }
+
+      }
+
+      &.navbar-left{
+
+        float: left;
+        margin-left: 0px;
+
+        @media (min-width: $mobile_breakpoint){
+          // Stuff for desktops
+          margin-left: 0px;
+        }
+
+        > li{
+
+          display: none;
+          float: left;
+
+          @media (min-width: $mobile_breakpoint){
+            // Stuff for desktops
+            display: block;
+          }
+
+          > a{
+            // opacity: 0.5;
+
+            // @include attach-icon();
+            // @include attached-icon(0, 0);
+
+            padding-left: 0px;
+            padding-right: 0px;
+
+            @media (min-width: $mobile_breakpoint){
+              // Stuff for desktops
+              padding-right: 30px;
+            }
+          }
+
+          &.bambini > a{
+            @include attached-icon(2, 0);
+          }
+          &.salute > a{
+            @include attached-icon(1, 0);
+          }
+
+          // Active item
+          &.current_page_item,
+          &.current-menu-item,
+          &.current-page-ancestor,
+          &.current-menu-ancestor,
+          &.current-menu-parent,
+          &.current-page-parent,
+          &.current_page_parent,
+          &.current_page_ancestor{
+            position: relative;
+
+            display: block;
+
+            >a{
+              opacity: 1;
+              @include attached-icon-state(1);
+            }
+            &:after{
+              content: "";
+              display: block;
+              height: 2px;
+              position: absolute;
+              background: $brand-primary;
+
+              left: 0px;
+              right: 0px;
+              bottom: 7px;
+
+              @media (min-width: $mobile_breakpoint){
+                // Stuff for desktops
+                right: 30px;
+              }
+            }
+          }
+        }
+      }
+
+      &.navbar-right{
+        float: right;
+      }
+    }
+
+
+  }
+  // /.navbar-dental-studio-site-areas
+
+
+  // .navbar-dental-studio
+  &.navbar-dental-studio{
+
+    // Default font-size 14px
+    font-size: 14px;
+    background-color: $navbar-background-color;
+
+    // Position navbar top starting under the smaller navbar
+    @if ($should-navbar-position-top) {
+      @extend .navbar-fixed-top;
+      // The upper navbar is hidden on mobile anyway
+      top: 0;
+      @media (min-width: $screen-sm-min){
+        top: $site-areas-navbar-height;
+      }
+    }@else{
+      margin-bottom: 0;
+    }
+
+    // The navbar toggle // Used on mobile/tablet
+    .navbar-toggle{
+      // float: initial;
+      padding: 11px 10px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      border-color: $gray-light;
+      border-width: 2px;
+
+      .icon-bar{
+        background-color: $navbar-main-link-color;
+        border-color: $navbar-main-link-color;
+      }
+
+      span.text-to-close{ display: block; }
+      span.text-to-open{ display: none; }
+
+      &.collapsed{
+        span.text-to-open{ display: block; }
+        span.text-to-close{ display: none; }
+      }
+    }
+
+    // For navbar buttons
+    .navbar-btn {
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    // Styles for the main navbar element // this is an <ul>
+    .nav.navbar-nav.navbar-parent{
+      // Its direct li elements
+      >li{
+        // Style for a root element with children
+        &.menu-item-has-children{
+          // Its direct a tag
+          > a{
+            margin-left: 0;
+            margin-right: 0;
+
+            @include attach-icon();
+            @include attached-icon(0, 2);
+
+            padding-left: 30px;
+            &:before{
+              position: absolute;
+              top: 18px;
+              left: 0px;
+
+            }
+
+            // Add ' home' like this => Dentista home
+            &:after{
+              content: " home"
+            }
+          }
+
+          // Fix the icon for specific classes
+          &.bambini > a{
+            @include attached-icon(2, 2);
+          }
+          &.salute > a{
+            @include attached-icon(1, 2);
+          }
+
+          // Let's hide all menu items by default with children on desktop
+          @media (min-width: $mobile_breakpoint){
+            // Stuff for desktops
+            display: none;
+          }
+
+          &.current_page_item,
+          &.current-menu-item,
+          &.current-page-ancestor,
+          &.current-menu-ancestor,
+          &.current-menu-parent,
+          &.current-page-parent,
+          &.current_page_parent,
+          &.current_page_ancestor{
+
+            > a{
+              @include attached-icon-state(3);
+            }
+
+            @media (min-width: $mobile_breakpoint){
+              // Stuff for desktops
+              // Show the active one and its children
+              display: block;
+              // width: 85%;
+
+              // Don't show the link of the main parent
+              >a{display: none;}
+              // Give all the space to the children
+              >.nav.navbar-nav{
+                width: 100%;
+              }
+            }
+
+          }
+
+          > .nav.navbar-nav{
+            > li > a{
+              padding-left: 30px;
+
+              @media (min-width: $mobile_breakpoint){
+                padding-left: 15px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .nav.navbar-nav{
+
+      // float: right;
+      // width: 100%;
+
+      // display: flex;
+      // justify-content: space-between;
+
+      margin-top: 0;
+
+      margin-left: 0;
+      margin-right: 0;
+
+      >li{
+
+        >a{
+          font-weight: 500;
+          text-transform: uppercase;
+          color: $navbar-main-link-color;
+
+          padding: 20px 0px;
+          padding-left: 0;
+          padding-right: 0;
+
+          @media (min-width: $mobile_breakpoint){
+            // Stuff for desktops
+            // Temporary: Calculate programmatically it please
+            padding: 29.5px 15px;
+          }
+
+          &:hover{background: initial;}
+        }
+
+        &.current-menu-item, &.current-menu-parent, &.current_page_parent:not(.menu-item-has-children){
+          >a{
+            @media (min-width: $mobile_breakpoint){
+              @include add-pattern-wave;
+            }
+          }
+        }
+
+        // Main navigation dropdown
+        &.dropdown{
+          position: static;
+
+          .dropdown-menu{
+            box-shadow: none;
+            border: none;
+          }
+
+          >ul{
+            border: none;
+
+            @media (min-width: 768px){
+              left: 0;
+              right: 0;
+
+              background-color: $brand-primary;
+
+              padding-top: 60px;
+              padding-bottom: 60px;
+
+              // First sub menu
+              >.container>li.menu-item-has-children{
+
+              }
+
+            }
+
+            a{
+              color: white;
+            }
+
+            // First dropdown child with a submenu itself
+            >.container>li.menu-item-has-children{
+              @extend .col-sm-3;
+              padding: 0;
+
+              // Link of item with children
+              >a{
+                display: block;
+                @extend .h3;
+                font-weight: 200;
+                color: white;
+                padding-bottom: 20px;
+                margin-right: 30px;
+
+
+                @extend .add-pattern-wave;
+                @extend .pattern-wave-special;
+                @extend .menu-item-with-children-fit-pattern;
+              }
+
+              // The dropdown of the submenu child
+              >.dropdown-menu{
+                display: block;
+                position: static;
+
+                background: transparent;
+                border-radius: 0;
+
+                width: 100%;
+
+                padding: 0;
+
+                >.container>li{
+                  font-size: 18px;
+
+
+                  >a{
+                    display: block;
+                    padding-top: 15px;
+                    padding-bottom: 15px;
+                    @extend .animate-on-hover-move-right;
+                  }
+                }
+              }
+              .container{
+                width: auto !important;
+                padding: 0;
+              }
+            }
+
+          }
+        }
+
+
+
+      }
+
+      >.navbar-btn{
+        margin-top: 20px;
+        margin-bottom: 20px;
+
+        &.btn-phone{
+          margin-top: 15px;
+          margin-bottom: 15px;
+        }
+      }
+
+      &.navbar-right{
+
+        @media (min-width: $mobile_breakpoint){
+          margin-right: -15px;
+        }
+
+        > .navbar-btn:last-child{
+          margin-right: 15px;
+        }
+      }
+    }
+  }
+  // /.navbar-dental-studio
+
+
+}
+
+
+body{
+  @if ($should-navbar-position-top) {
+    padding-top: $site-areas-navbar-height + $navbar-height;
+  }
+
+  &.hide_navbar{
+    padding-top: 0px;
+
+    header.navbar{
+      display: none;
+    }
+
+  }
+
+  &.overflow-hidden{
+    overflow: hidden;
+  }
+}
 
 // Logo
 .logo {}
 
 .logo-img {}
+
+.page-header{
+  padding: 0;
+  margin: 0;
+
+
+  @media (min-width: $screen-sm-min){
+    padding-top: 30px;
+    margin-bottom: 30px;
+  }
+
+  @media (min-width: $screen-md-min){
+    // padding-top: 60px;
+  }
+
+  .container{
+    // @include pattern-icons-background('left', 0.3, top, -60px, -110px);
+  }
+
+  .subtitle{
+    margin-top: 0px;
+    margin-bottom: 30px;
+    font-size: 26px;
+    font-weight: 200;
+
+    color: $heading-h1-color;
+  }
+}
+
+
+// .dental-studio-check-open-now
+
+.dental-studio-check-open-now{
+
+  position: relative;
+  padding-left: 35px !important;
+
+  &:before{
+    content: "";
+    display: block;
+    position: absolute;
+    left: 15px !important;
+    top: 40% !important;
+
+    height: 8px;
+    width: 8px;
+
+    border-radius: 50%;
+  }
+
+  &.open{
+    &:before{
+      background-color: #07DC07;
+      animation: animation-pulse-opacity 1s infinite ease-out;
+    }
+  }
+}
+
+
+
+
+@media (max-width: $screen-xs-max){
+  #woopstrapblank-nav-menu{
+
+    background-color: $brand-primary;
+
+    // Position navbar top starting under the smaller navbar
+    @if ($should-navbar-position-top) {
+      position: fixed;
+      // The upper navbar is hidden on mobile anyway
+      top: $navbar-height; // 80px !default
+      @media (min-width: $screen-sm-min){
+        top: $navbar-height + $site-areas-navbar-height; // 80px + 50px = 130px
+      }
+    }@else{
+      margin-bottom: 0;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+    }
+
+    ul > li > a{
+      color: white;
+      padding-left: 15px;
+    }
+
+    > ul > li.menu-item-has-children > a{
+      text-indent: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      &:before{left: 15px;}
+      &:after{content: none;}
+    }
+
+    &.in{
+      z-index: 10;
+      bottom: 0px;
+      max-height: 99999px;
+      right: 15px;
+      left: 15px;
+    }
+
+  }
+
+}

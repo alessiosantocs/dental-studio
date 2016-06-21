@@ -3,8 +3,193 @@
  * ---
  */
 
+@mixin abs-attach-margins($padding: 0px){
+  top: 0px - $padding;
+  bottom: 0px - $padding;
+  left: 0px - $padding;
+  right: 0px - $padding;
+}
 
 @mixin reset-box {
   padding: 0;
   margin: 0;
+}
+
+@mixin crossBrowser($property, $value){
+  -webkit-#{$property}: $value;
+  -moz-#{$property}: $value;
+  -ms-#{$property}: $value;
+  -o-#{$property}: $value;
+  #{$property}: $value;
+}
+@mixin crossBrowserAdv($property, $value){
+  -webkit-#{$property}: -webkit-#{$value};
+  -moz-#{$property}: -moz-#{$value};
+  -ms-#{$property}: -ms-#{$value};
+  -o-#{$property}: -o-#{$value};
+  #{$property}: #{$value};
+}
+@mixin crossBrowserAdv2($property, $value, $value2){
+  -webkit-#{$property}: -webkit-#{$value}, $value2;
+  -moz-#{$property}: -moz-#{$value}, $value2;
+  -ms-#{$property}: -ms-#{$value}, $value2;
+  -o-#{$property}: -o-#{$value}, $value2;
+  #{$property}: #{$value}, $value2;
+}
+
+.underline-on-hover{
+  text-decoration: none;
+
+  &:hover, &.hover{
+    text-decoration: underline;
+  }
+}
+
+// Animations
+.animate-on-hover-move-right{
+  @include crossBrowserAdv(transition, transform .3s ease);
+  @include crossBrowser(transform, translateX(0px));
+
+  &:hover, &.hover{
+    @include crossBrowser(transform, translateX(10px));
+  }
+}
+
+.animate-on-hover-underline-effect{
+  position: relative;
+
+  &:after{
+    content: "";
+    display: block;
+
+    height: 2px;
+    background: #A1BDE0;
+    width: 0%;
+
+    position: absolute;
+    bottom: 5px;
+    left: 0;
+
+    @include crossBrowser(transition, width .4s ease);
+  }
+
+  &:hover, &.hover{
+    &:after{
+      width: 100%;
+    }
+  }
+}
+
+@-webkit-keyframes animation-pulse-opacity{
+  0%{ opacity: 0.5; }
+  50%{ opacity: 1; }
+  100%{ opacity: 0.5; }
+}
+
+
+@mixin add-pattern-wave {
+  position: relative;
+  &:after{
+    content: "";
+    display: block;
+    position: absolute;
+
+    height: 13px;
+    bottom: 15px; left: 15px; right: 15px;
+
+    background-image: url(img/resources/pattern-default-wave.png);
+    background-repeat: repeat-x;
+    background-position: top;
+    background-size: 16px 13px;
+  }
+}
+
+
+.add-pattern-wave{
+  @include add-pattern-wave;
+}
+.pattern-wave-special{
+  &:after{
+    background-image: url(img/resources/pattern-special-wave.png);
+  }
+}
+
+.heading-with-pattern{
+  display: inline-block;
+  padding-bottom: 15px;
+
+  &:after{
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+.menu-item-with-children-fit-pattern{
+  &:after{
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}
+
+// Patterns
+
+@mixin pattern-icons-background($configuration: 'tile', $opacity: 1, $vertical-position: center, $pos-top: 0px, $pos-left: 0px){
+  // Default rule is tile
+  $background-rule: url(http://localhost/www.adec.it/wp-content/themes/dental-studio/src/img/resources/pattern.png);
+  @if $configuration == 'bothsides'{
+    $background-rule: url(http://localhost/www.adec.it/wp-content/themes/dental-studio/src/img/resources/pattern.png) left $vertical-position no-repeat, url(http://localhost/www.adec.it/wp-content/themes/dental-studio/src/img/resources/pattern.png) right $vertical-position no-repeat;
+  }@elseif $configuration == 'left'{
+    $background-rule: url(http://localhost/www.adec.it/wp-content/themes/dental-studio/src/img/resources/pattern.png) left $vertical-position no-repeat;
+  }@elseif $configuration == 'right'{
+    $background-rule: url(http://localhost/www.adec.it/wp-content/themes/dental-studio/src/img/resources/pattern.png) right $vertical-position no-repeat;
+  }
+
+  @if $opacity == 1 {
+    background: $background-rule;
+  }@else{
+    position: relative;
+    background: transparent;
+    &:before{
+      content: "";
+      display: block;
+      position: absolute;
+
+      @include abs-attach-margins;
+
+      top: $pos-top;
+      left: $pos-left;
+
+      background: white $background-rule;
+      opacity: $opacity;
+
+      z-index: -1;
+    }
+  }
+
+}
+
+@mixin attach-icon(){
+  &:before{
+    content: "";
+    display: inline-block;
+
+    height: 25px;
+    width: 25px;
+
+    background-image: url(img/resources/icon-sprite.png);
+    background-size: 130px 250px;
+  }
+}
+@mixin attached-icon($icon-row, $icon-column){
+  &:before{
+    background-position: (-1 * $icon-column * 25px) (-1 * $icon-row * 25px);
+  }
+}
+
+@mixin attached-icon-state($icon-column){
+  &:before{
+    background-position-x: (-1 * $icon-column * 25px);
+  }
 }

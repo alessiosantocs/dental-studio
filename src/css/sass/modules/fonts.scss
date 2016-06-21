@@ -4,16 +4,65 @@
  * Declare fonts here
  */
 
-
-/*
 @font-face {
-  font-family: "Font-Name";
-  src: url("fonts/font-name.eot");
-  src: url("fonts/font-name.eot?#iefix") format("embedded-opentype"),
-    url("fonts/font-name.woff") format("woff"),
-    url("fonts/font-name.ttf") format("truetype"),
-    url("fonts/font-name.svg#font-name") format("svg");
-  font-weight: normal;
+  font-family: "Signika";
+  src: url("fonts/signika/Signika-Regular.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
 }
-*/
+@font-face {
+  font-family: "Signika";
+  src: url("fonts/signika/Signika-Light.ttf") format("truetype");
+  font-weight: 200;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Signika";
+  src: url("fonts/signika/Signika-Semibold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Signika";
+  src: url("fonts/signika/Signika-Bold.ttf") format("truetype");
+  font-weight: 800;
+  font-style: normal;
+}
+
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-family: $font-family-headings;
+  font-weight: 200;
+  line-height: 1.3em;
+  color: $heading-color;
+
+  &.normal-font{
+    font-family: $font-family-base;
+    font-weight: 300;
+  }
+}
+
+h1,.h1{
+  color: $heading-h1-color;
+
+  @media (min-width: 768px){
+    font-size: 46px;
+  }
+}
+
+p.lead{
+  font-size: 21px;
+
+}
+
+// Text columns classes
+$max-columns: 8;
+@for $i from 2 through $max-columns{
+  @media (min-width: $screen-xs){
+    .text-columns-#{$i}{
+      -webkit-column-count: $i; /* Chrome, Safari, Opera */
+      -moz-column-count: $i; /* Firefox */
+      column-count: $i;
+    }
+  }
+}

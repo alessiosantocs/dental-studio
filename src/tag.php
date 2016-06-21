@@ -1,19 +1,39 @@
 <?php get_header(); ?>
 
-	<main role="main">
-		<!-- section -->
-		<section>
-
+	<div class="page-header">
+		<div class="container">
 			<h1><?php _e( 'Tag Archive: ', 'woopstrapblank' ); echo single_tag_title('', false); ?></h1>
+		</div>
+	</div>
 
-			<?php get_template_part('loop'); ?>
 
-			<?php get_template_part('pagination'); ?>
+	<!-- section -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<!-- column-main-content -->
+				<div class="column-main-content">
 
-		</section>
-		<!-- /section -->
-	</main>
+					<?php get_template_part('loop'); ?>
 
-<?php get_sidebar(); ?>
+					<?php get_template_part('pagination'); ?>
+
+				</div>
+				<!-- /column-main-content -->
+
+				<!-- column-side-content -->
+				<!-- <div class="column-side-content">
+					<?php //get_sidebar(); ?>
+				</div> -->
+				<!-- /column-side-content -->
+
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /section -->
 
 <?php get_footer(); ?>

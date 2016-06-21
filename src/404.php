@@ -14,7 +14,7 @@
 			<!-- row -->
 			<div class="row">
 				<!-- col-md-9 -->
-				<div class="col-md-9">
+				<div class="column-main-content">
 
 					<!-- article -->
 					<div id="post-404" class="article">
@@ -27,13 +27,13 @@
 					<!-- /article -->
 
 				</div>
-				<!-- /col-md-9 -->
+				<!-- /column-main-content -->
 
-				<!-- col-md-3 -->
-				<div class="col-md-3">
+				<!-- column-side-content -->
+				<div class="column-side-content">
 					<?php get_sidebar(); ?>
 				</div>
-				<!-- /col-md-3 -->
+				<!-- /column-side-content -->
 
 			</div>
 			<!-- /row -->

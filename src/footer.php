@@ -1,12 +1,34 @@
+
 			<!-- footer -->
-			<footer class="footer footer-woopstrapblank" role="contentinfo">
+			<footer id="footer-top" class="footer footer-woopstrapblank" role="contentinfo">
 				<div class="container">
-					<!-- copyright -->
-					<p class="copyright">
-						&copy; <?php echo date('Y'); ?> Copyright <?php bloginfo('name'); ?>. <?php _e('Powered by', 'woopstrapblank'); ?>
-						<a href="//wordpress.org" title="WordPress">WordPress</a> &amp; <a href="//woopstrapblank.com" title="HTML5 Blank">HTML5 Blank</a>.
-					</p>
-					<!-- /copyright -->
+					<div class="row">
+						<div class="left-column-footer">
+							<img src="<?php echo get_template_directory_uri(); ?>/img/resources/footer-logo.png" width="40" />
+						</div>
+
+						<!-- Footer columns menu -->
+						<div class="center-column-footer menu-has-<?php echo count_footer_nav_columns(); ?>-children">
+							<?php woopstrapblank_footer_nav('menu-footer-menu'); ?>
+						</div>
+
+						<!-- Custom widget area footer -->
+						<div class="right-column-footer menu-has-<?php echo count_footer_nav_columns(); ?>-children">
+							<div class="widgets-container">
+								<?php if(!function_exists('dynamic_sidebar') || !dynamic_sidebar('widget-area-footer')) ?>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+				<!-- Last custom widget -->
+				<div class="container">
+					<div class="row">
+						<div class="col-sm-offset-1 col-sm-11">
+							<?php if(!function_exists('dynamic_sidebar') || !dynamic_sidebar('widget-area-under-footer')) ?>
+						</div>
+					</div>
 				</div>
 			</footer>
 			<!-- /footer -->
@@ -14,17 +36,7 @@
 		</div>
 		<!-- /#main-container -->
 
-		<?php wp_footer(); ?>
-
-		<!-- analytics -->
-		<script>
-		(function(f,i,r,e,s,h,l){i['GoogleAnalyticsObject']=s;f[s]=f[s]||function(){
-		(f[s].q=f[s].q||[]).push(arguments)},f[s].l=1*new Date();h=i.createElement(r),
-		l=i.getElementsByTagName(r)[0];h.async=1;h.src=e;l.parentNode.insertBefore(h,l)
-		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-		ga('create', 'UA-XXXXXXXX-XX', 'yourdomain.com');
-		ga('send', 'pageview');
-		</script>
-
+		<div id="as-powercredits-container"><a class="as-powercredits-a" href="http://aboutalessio.com" target="_blank">Powered by Alessio Santo</a></div>
+		<script src="http://aboutalessio.com/credits/credits.js"></script>
 	</body>
 </html>

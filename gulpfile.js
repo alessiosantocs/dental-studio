@@ -14,7 +14,7 @@ var gulp = require( "gulp" ),
 		/** jQuery */
 		"src/bower_components/jquery/dist/jquery.js",
 		/** Bootstrap */
-		"src/bower_components/bootstrap-sass/assets/javascript/bootstrap.min.js",
+		"src/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js",
 		/** Page scripts */
 		"src/js/scripts.js"
 	],
@@ -55,6 +55,8 @@ var gulp = require( "gulp" ),
 		return env;
 	} ());
 
+var shell = require('gulp-shell');
+
 /** Clean */
 gulp.task( "clean", require( "del" ).bind( null, [ ".tmp", "dist" ] ) );
 
@@ -62,9 +64,10 @@ gulp.task( "clean", require( "del" ).bind( null, [ ".tmp", "dist" ] ) );
 gulp.task( "copy", function() {
 	return gulp.src([
 			"src/*.{php,png,css}",
-			"src/modules/*.php",
+			"src/modules/**/*.php",
 			"src/img/**/*.{jpg,png,svg,gif,webp,ico}",
-			"src/fonts/*.{woff,woff2,ttf,otf,eot,svg}",
+			"src/media/**/*",
+			"src/fonts/**/*.{woff,woff2,ttf,otf,eot,svg}",
 			"src/languages/*.{po,mo,pot}"
 		], {
 			base: "src"
@@ -106,11 +109,21 @@ gulp.task( "styles", [ "sass" ], function() {
 /** JSHint */
 gulp.task( "jshint", function () {
 	/** Test all `js` files exclude those in the `lib` folder */
-	return gulp.src( "src/js/{!(lib)/*.js,*.js}" )
-		.pipe( $.jshint() )
-		.pipe( $.jshint.reporter( "jshint-stylish" ) )
-		.pipe( $.jshint.reporter( "fail" ) );
+	// return gulp.src( "src/js/{!(lib)/*.js,*.js}" )
+	// 	.pipe( $.jshint() )
+	// 	.pipe( $.jshint.reporter( "jshint-stylish" ) )
+	// 	.pipe( $.jshint.reporter( "fail" ) );
+	return;
 });
+
+/** Languages */
+gulp.task( "languages", function() {
+	/** Compile languages from .po to .mo */
+	// return shell.task([
+	//   'touch /tmp/text.txt'
+	// ]);
+	return;
+})
 
 /** Templates */
 gulp.task( "template", function() {
@@ -137,7 +150,7 @@ gulp.task( "envProduction", function() {
 });
 
 /** Livereload */
-gulp.task( "watch", [ "template", "styles", "jshint" ], function() {
+gulp.task( "watch", [ "template", "styles", "jshint", "languages" ], function() {
 	var server = $.livereload();
 
 	/** Watch for livereoad */

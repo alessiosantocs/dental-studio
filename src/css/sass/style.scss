@@ -10,7 +10,13 @@
 // Modules
 @import "modules/variables";
 @import "modules/mixins";
+
+@import "modules/buttons";
 @import "modules/fonts";
+@import "modules/sections";
+@import "modules/thumbnails";
+@import "modules/forms";
+@import "modules/widgets";
 
 // Partials
 @import "partials/reset";
@@ -19,6 +25,9 @@
 @import "partials/wrapper";
 @import "partials/header";
 @import "partials/nav";
+@import "partials/posts";
 @import "partials/sidebar";
+@import "partials/specialties";
+@import "partials/custom_post_specialists";
 @import "partials/footer";
 @import "partials/print";

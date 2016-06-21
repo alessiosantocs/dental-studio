@@ -161,6 +161,9 @@ msgstr "Nessun articolo personalizzato trovato"
 msgid "No HTML5 Blank Custom Posts found in Trash"
 msgstr "Nessun articolo personalizzato trovato nel cestino"
 
+msgid "Post navigation"
+msgstr "Naviga fra i post"
+
 #: ../index.php:6
 msgid "Latest Posts"
 msgstr "Ultimi articoli"
@@ -192,3 +195,37 @@ msgstr "Archivio tag: "
 
 #~ msgid "%s results for "
 #~ msgstr "%s risultati per "
+
+# DENTAL STUDIO PART
+msgid "Open every day from 8am to 11pm"
+msgstr "Tutti i giorni dalle 8 alle 23"
+
+msgid "800 10 20 20"
+msgstr "800 10 20 20"
+
+msgid "Toll free number"
+msgstr "Numero gratuito"
+
+msgid "Adec Team"
+msgstr "Lo staff di Adec"
+
+msgid "Meet our health professionals"
+msgstr "Conosci i nostri specialisti"
+
+msgid "We're waiting for you!"
+msgstr "Ti stavamo aspettando. Ora che sei qui anche tu, possiamo iniziare!"
+
+msgid "Specialists"
+msgstr "Lo staff"
+
+msgid "Call us"
+msgstr "Chiama"
+
+msgid "Call us now"
+msgstr "Chiamaci subito"
+
+msgid "Where are we"
+msgstr "Dove siamo"
+
+msgid "Read the blog"
+msgstr "Il nostro blog"

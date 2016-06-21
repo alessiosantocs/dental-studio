@@ -1,8 +1,13 @@
-<?php get_header(); ?>
+<?php
+get_header();
+$curauth = (isset($_GET['author_name'])) ? get_user_by('slug', $author_name) : get_userdata(intval($author));
+?>
 
 	<div class="page-header">
 		<div class="container">
-			<h1><?php _e( 'Author Archives for ', 'woopstrapblank' ); echo get_the_author(); ?></h1>
+			<h1>
+				<?php echo $curauth->display_name; ?>
+			</h1>
 		</div>
 	</div>
 
@@ -14,82 +19,22 @@
 			<!-- row -->
 			<div class="row">
 				<!-- col-md-9 -->
-				<div class="col-md-9">
+				<div class="column-main-content">
 
-					<?php if (have_posts()): the_post(); ?>
-
-					<?php if ( get_the_author_meta('description')) : ?>
-
-					<?php echo get_avatar(get_the_author_meta('user_email')); ?>
-
-						<h3><?php _e( 'About ', 'woopstrapblank' ); echo get_the_author() ; ?></h3>
-
-						<?php echo wpautop( get_the_author_meta('description') ); ?>
-
-					<?php endif; ?>
-
-					<?php rewind_posts(); while (have_posts()) : the_post(); ?>
-
-						<!-- article -->
-						<div id="post-<?php the_ID(); ?>" <?php post_class('article'); ?>>
-
-							<!-- post thumbnail -->
-							<?php if ( has_post_thumbnail()) : // Check if Thumbnail exists ?>
-								<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>">
-									<?php the_post_thumbnail(array(120,120)); // Declare pixel size you need inside the array ?>
-								</a>
-							<?php endif; ?>
-							<!-- /post thumbnail -->
-
-							<!-- post title -->
-							<h3>
-								<a href="<?php the_permalink(); ?>" title="<?php the_title_attribute(); ?>"><?php the_title(); ?></a>
-							</h3>
-							<!-- /Post title -->
-
-							<!-- post details -->
-							<span class="date">
-								<time datetime="<?php the_time('Y-m-d'); ?> <?php the_time('H:i'); ?>">
-									<?php the_date(); ?> <?php the_time(); ?>
-								</time>
-							</span>
-							<span class="author"><?php _e( 'Published by', 'woopstrapblank' ); ?> <?php the_author_posts_link(); ?></span>
-							<span class="comments"><?php comments_popup_link( __( 'Leave your thoughts', 'woopstrapblank' ), __( '1 Comment', 'woopstrapblank' ), __( '% Comments', 'woopstrapblank' )); ?></span>
-							<!-- /post details -->
-
-							<?php html5wp_excerpt('html5wp_index'); // Build your custom callback length in functions.php ?>
-
-							<br class="clear">
-
-							<?php edit_post_link(); ?>
-
-						</div>
-						<!-- /article -->
-
-					<?php endwhile; ?>
-
-					<?php else: ?>
-
-						<!-- article -->
-						<div class="article">
-
-							<h3><?php _e( 'Sorry, nothing to display.', 'woopstrapblank' ); ?></h3>
-
-						</div>
-						<!-- /article -->
-
-					<?php endif; ?>
-
-						<?php get_template_part('pagination'); ?>
-
+					<div class="pull_left" style="margin-right:1em">
+						<?php echo get_avatar( $curauth->ID, '220' ); ?>
+					</div>
+					<p>
+						<?php echo $curauth->user_description; ?>
+					</p>
 				</div>
-				<!-- /col-md-9 -->
+				<!-- /column-main-content -->
 
-				<!-- col-md-3 -->
-				<div class="col-md-3">
+				<!-- column-side-content -->
+				<div class="column-side-content">
 					<?php get_sidebar(); ?>
 				</div>
-				<!-- /col-md-3 -->
+				<!-- /column-side-content -->
 
 			</div>
 			<!-- /row -->

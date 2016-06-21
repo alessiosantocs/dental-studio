@@ -7,6 +7,10 @@
 
 require_once "modules/is-debug.php";
 
+function posts_index_page_id(){
+  return 55;
+}
+
 /*------------------------------------*\
     External Modules/Files
 \*------------------------------------*/
@@ -22,15 +26,73 @@ if (!isset($content_width))
     $content_width = 900;
 }
 
+function mytheme_setup() {
+	// Set default values for the upload media box
+	update_option('image_default_align', 'center' );
+	update_option('image_default_link_type', 'media' );
+	update_option('image_default_size', 'large' );
+
+}
+add_action('after_setup_theme', 'mytheme_setup');
+
+
+// This function prevents images to be too big
+function replace_default_image_url($content){
+  // Extract images into the $matches folder
+  if ( ! preg_match_all( '/<img [^>]+>/', $content, $matches ) ) {
+    return $content;
+  }
+
+  $selected_images = $attachment_ids = array();
+
+  // Cycle through images
+  foreach( $matches[0] as $image ) {
+    if ( preg_match( '/wp-image-([0-9]+)/i', $image, $class_id ) &&
+      ( $attachment_id = absint( $class_id[1] ) ) ) {
+
+      /*
+       * If exactly the same image tag is used more than once, overwrite it.
+       * All identical tags will be replaced later with 'str_replace()'.
+       */
+      $selected_images[ $image ] = $attachment_id;
+      // Overwrite the ID when the same image is included more than once.
+      $attachment_ids[ $attachment_id ] = true;
+    }
+  }
+
+  foreach ( $selected_images as $image => $attachment_id ) {
+    $image_src = preg_match( '/src="([^"]+)"/', $image, $match_src ) ? $match_src[1] : '';
+  	list( $image_src ) = explode( '?', $image_src );
+
+    $original_src = wp_get_attachment_image_src($attachment_id, 'full');
+    $original_src = $original_src[0];
+
+    if ($image_src === $original_src) {
+      $extralarge_src = wp_get_attachment_image_src($attachment_id, 'extralarge');
+      $extralarge_src = $extralarge_src[0];
+
+      $new_image = preg_replace( '/ src="([^"]+)"/', ' src="' . $extralarge_src . '"', $image );
+  		$content = str_replace( $image, $new_image, $content );
+    }
+
+
+	}
+
+  return $content;
+}
+
+add_filter( 'the_content', 'replace_default_image_url' );
+
 if (function_exists('add_theme_support'))
 {
 
     // Add Thumbnail Theme Support
     add_theme_support('post-thumbnails');
+    add_image_size('extralarge', 1500, '', true); // Large Thumbnail
     add_image_size('large', 700, '', true); // Large Thumbnail
     add_image_size('medium', 250, '', true); // Medium Thumbnail
     add_image_size('small', 120, '', true); // Small Thumbnail
-    add_image_size('custom-size', 700, 200, true); // Custom Thumbnail Size call using the_post_thumbnail('custom-size');
+    // add_image_size('custom-size', 700, 200, true); // Custom Thumbnail Size call using the_post_thumbnail('custom-size');
 
     // Add Support for Custom Backgrounds - Uncomment below if you're going to use
     /*add_theme_support('custom-background', array(
@@ -56,35 +118,101 @@ if (function_exists('add_theme_support'))
 
     // Localisation Support
     load_theme_textdomain('woopstrapblank', get_template_directory() . '/languages');
+
+
 }
 
 /*------------------------------------*\
     Functions
 \*------------------------------------*/
 
-// HTML5 Blank navigation
-function woopstrapblank_nav($menu_class="")
+function woopstrapblank_footer_nav($menu_class="", $echo=true)
 {
-    wp_nav_menu(
+    $menu = wp_nav_menu(
     array(
-        'theme_location'  => 'header-menu',
+        'theme_location'  => 'footer-menu',
         'menu'            => '',
         'container'       => 'div',
         'container_class' => 'menu-{menu slug}-container',
         'container_id'    => '',
         'menu_class'      => $menu_class,
         'menu_id'         => '',
-        'echo'            => true,
-        'fallback_cb'     => 'wp_page_menu',
+        'echo'            => false,
+        'fallback_cb'     => false,
         'before'          => '',
         'after'           => '',
         'link_before'     => '',
         'link_after'      => '',
-        'items_wrap'      => '<ul class="nav navbar-nav %2$s" id="%1$s">%3$s</ul>',
+        // 'items_wrap'      => '%3$s',
         'depth'           => 0,
         'walker'          => ''
         )
     );
+
+    if($menu != false){
+      if ($echo) {
+        echo $menu;
+      }else{
+        return $menu;
+      }
+
+    }elseif(current_user_can('edit_dashboard')){
+      if ($echo) {
+        echo 'Add some elements to the "footer-menu" location';
+      }else{
+        return false;
+      }
+    }
+
+}
+
+function count_footer_nav_columns(){
+  $menu = woopstrapblank_footer_nav("", false);
+  return substr_count($menu, 'menu-item-has-children');
+}
+
+function woopstrapblank_specialties_nav($menu_class="")
+{
+    $menu = wp_nav_menu(
+    array(
+        'theme_location'  => 'specialties-menu',
+        'menu'            => '',
+        'container'       => 'div',
+        'container_class' => 'menu-{menu slug}-container',
+        'container_id'    => '',
+        'menu_class'      => $menu_class,
+        'menu_id'         => '',
+        'echo'            => false,
+        'fallback_cb'     => false,
+        'before'          => '',
+        'after'           => '',
+        'link_before'     => '',
+        'link_after'      => '',
+        // 'items_wrap'      => '%3$s',
+        'depth'           => 0,
+        'walker'          => ''
+        )
+    );
+
+    if($menu != false){
+      echo $menu;
+    }elseif(current_user_can('edit_dashboard')){
+      echo 'Add some elements to the "specialties-menu" location';
+    }
+
+}
+
+function woopstrapblank_get_featured_content() {
+  global $featured_query;
+
+  $args = array(
+    'post_type' => 'post',
+    'category_name' => 'featured'
+  );
+
+  $featured_query = new WP_Query( $args );
+
+  return true;
 }
 
 // Load HTML5 Blank scripts (header.php)
@@ -102,6 +230,9 @@ function woopstrapblank_header_scripts()
             // Modernizr
             wp_register_script('modernizr', get_template_directory_uri() . '/bower_components/modernizr/modernizr.js', array(), '2.8.3');
 
+            // Bootstrap
+            wp_register_script('bootstrap', get_template_directory_uri() . '/bower_components/bootstrap-sass/assets/javascripts/bootstrap.min.js', array());
+
             // Custom scripts
             wp_register_script(
                 'woopstrapblankscripts',
@@ -109,6 +240,7 @@ function woopstrapblank_header_scripts()
                 array(
                     'conditionizr',
                     'modernizr',
+                    'bootstrap',
                     'jquery'),
                 '1.0.0');
 
@@ -159,9 +291,9 @@ function woopstrapblank_styles()
 function register_html5_menu()
 {
     register_nav_menus(array( // Using array to specify more menus if needed
-        'header-menu' => __('Header Menu', 'woopstrapblank'), // Main Navigation
         'sidebar-menu' => __('Sidebar Menu', 'woopstrapblank'), // Sidebar Navigation
-        'extra-menu' => __('Extra Menu', 'woopstrapblank') // Extra Navigation if needed (duplicate as many as you need!)
+        'footer-menu' => __('Footer Menu', 'woopstrapblank'), // Footer Navigation
+        'specialties-menu' => __('Specialties Menu', 'woopstrapblank') // Specialties Navigation
     ));
 }
 
@@ -197,6 +329,49 @@ function add_slug_to_body_class($classes)
         $classes[] = sanitize_html_class($post->post_name);
     } elseif (is_singular()) {
         $classes[] = sanitize_html_class($post->post_name);
+    }elseif (is_category( )) {
+    	$cat = get_query_var('cat');
+    	$current_category = get_category($cat);
+
+    	if( true ){//(int)$current_category->parent == 0 ) {
+
+    		$args = array(
+    			'parent'                   => $current_category->cat_ID,
+    			'orderby'                  => 'name',
+    			'order'                    => 'ASC',
+    			'hide_empty'               => 0,
+    			'hierarchical'             => 1,
+    			'exclude'                  => '',
+    			'include'                  => '',
+    			'number'                   => '',
+    			'taxonomy'                 => 'category',
+    			'pad_counts'               => false
+    		);
+
+    		$child_categories = get_categories( $args );
+
+        if( count($child_categories) > 0 ){
+          $classes[] = 'category-index';
+        }
+
+    	}
+    }
+
+    return $classes;
+}
+
+// Add custom classes to layout for each page
+function add_page_layout_classes_to_body_class($classes)
+{
+    global $post;
+
+    if (is_page()) {
+      $page_layout = get_field_object('page_layout');
+
+      if(!empty($page_layout)){
+        $page_layout =$page_layout['value'];
+        $classes[] = join($page_layout, ' ');
+      }
     }
 
     return $classes;
@@ -214,10 +389,10 @@ if (function_exists('register_sidebar'))
 {
     // Define Sidebar Widget Area 1
     register_sidebar(array(
-        'name' => __('Widget Area 1', 'woopstrapblank'),
-        'description' => __('Description for this widget-area...', 'woopstrapblank'),
+        'name' => __('Widget Area Sidebar First', 'woopstrapblank'),
+        'description' => __('Widget area first row of the sidebar', 'woopstrapblank'),
         'id' => 'widget-area-1',
-        'before_widget' => '<div id="%1$s" class="%2$s">',
+        'before_widget' => '<div id="%1$s" class="%2$s area-1-widget area-widget widget">',
         'after_widget' => '</div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>'
@@ -225,13 +400,35 @@ if (function_exists('register_sidebar'))
 
     // Define Sidebar Widget Area 2
     register_sidebar(array(
-        'name' => __('Widget Area 2', 'woopstrapblank'),
-        'description' => __('Description for this widget-area...', 'woopstrapblank'),
+        'name' => __('Widget Area Sidebar Second', 'woopstrapblank'),
+        'description' => __('Widget area second row of the sidebar', 'woopstrapblank'),
         'id' => 'widget-area-2',
-        'before_widget' => '<div id="%1$s" class="%2$s">',
+        'before_widget' => '<div id="%1$s" class="%2$s area-2-widget area-widget widget">',
         'after_widget' => '</div>',
         'before_title' => '<h3>',
         'after_title' => '</h3>'
+    ));
+
+    // Define Sidebar Widget Area Footer
+    register_sidebar(array(
+        'name' => __('Widget Area Footer', 'woopstrapblank'),
+        'description' => __('The widget area that goes in the footer right side', 'woopstrapblank'),
+        'id' => 'widget-area-footer',
+        'before_widget' => '<div id="%1$s" class="%2$s area-footer-widget area-widget widget">',
+        'after_widget' => '</div>',
+        'before_title' => '<div class="widget-title">',
+        'after_title' => '</div>'
+    ));
+
+    // Define Sidebar Widget Area Under Footer
+    register_sidebar(array(
+        'name' => __('Widget Area Under Footer', 'woopstrapblank'),
+        'description' => __('The widget that goes below the footer', 'woopstrapblank'),
+        'id' => 'widget-area-under-footer',
+        'before_widget' => '<div id="%1$s" class="%2$s area-under-footer-widget area-widget widget">',
+        'after_widget' => '</div>',
+        'before_title' => '<div class="widget-title">',
+        'after_title' => '</div>'
     ));
 }
 
@@ -270,6 +467,10 @@ function html5wp_custom_post($length)
     return 40;
 }
 
+function home_recent_post_excerpt_length(){
+  return 10;
+}
+
 // Create the Custom Excerpts callback
 function html5wp_excerpt($length_callback = '', $more_callback = '')
 {
@@ -283,7 +484,7 @@ function html5wp_excerpt($length_callback = '', $more_callback = '')
     $output = get_the_excerpt();
     $output = apply_filters('wptexturize', $output);
     $output = apply_filters('convert_chars', $output);
-    $output = '<p>' . $output . '</p>';
+    // $output = '<p>' . $output . '</p>';
     echo $output;
 }
 
@@ -291,7 +492,8 @@ function html5wp_excerpt($length_callback = '', $more_callback = '')
 function html5_blank_view_article($more)
 {
     global $post;
-    return '... <a class="view-article" href="' . get_permalink($post->ID) . '">' . __('View Article', 'woopstrapblank') . '</a>';
+    return '...';
+    // return '... <a class="view-article" href="' . get_permalink($post->ID) . '">' . __('View article', 'woopstrapblank') . '</a>';
 }
 
 // Remove Admin bar
@@ -385,7 +587,6 @@ add_action('wp_print_scripts', 'woopstrapblank_conditional_scripts'); // Add Con
 add_action('get_header', 'enable_threaded_comments'); // Enable Threaded Comments
 add_action('wp_enqueue_scripts', 'woopstrapblank_styles'); // Add Theme Stylesheet
 add_action('init', 'register_html5_menu'); // Add HTML5 Blank Menu
-add_action('init', 'create_post_type_html5'); // Add our HTML5 Blank Custom Post Type
 add_action('widgets_init', 'my_remove_recent_comments_style'); // Remove inline Recent Comment Styles from wp_head()
 add_action('init', 'html5wp_pagination'); // Add our HTML5 Pagination
 
@@ -401,6 +602,7 @@ remove_action('wp_head', 'wp_shortlink_wp_head', 10, 0);
 // Add Filters
 add_filter('avatar_defaults', 'woopstrapblankgravatar'); // Custom Gravatar in Settings > Discussion
 add_filter('body_class', 'add_slug_to_body_class'); // Add slug to body class (Starkers build)
+add_filter('body_class', 'add_page_layout_classes_to_body_class'); // Add classes from page_layout
 add_filter('widget_text', 'do_shortcode'); // Allow shortcodes in Dynamic Sidebar
 add_filter('widget_text', 'shortcode_unautop'); // Remove <p> tags in Dynamic Sidebars (better!)
 add_filter('wp_nav_menu_args', 'my_wp_nav_menu_args'); // Remove surrounding <div> from WP Navigation
@@ -427,47 +629,16 @@ add_shortcode('html5_shortcode_demo_2', 'html5_shortcode_demo_2'); // Place [htm
 // Shortcodes above would be nested like this -
 // [html5_shortcode_demo] [html5_shortcode_demo_2] Here's the page title! [/html5_shortcode_demo_2] [/html5_shortcode_demo]
 
+require_once "modules/custom-navbar.php";
+
+
 /*------------------------------------*\
     Custom Post Types
 \*------------------------------------*/
 
-// Create 1 Custom Post type for a Demo, called HTML5-Blank
-function create_post_type_html5()
-{
-    register_taxonomy_for_object_type('category', 'html5-blank'); // Register Taxonomies for Category
-    register_taxonomy_for_object_type('post_tag', 'html5-blank');
-    register_post_type('html5-blank', // Register Custom Post Type
-        array(
-        'labels' => array(
-            'name' => __('HTML5 Blank Custom Post', 'woopstrapblank'), // Rename these to suit
-            'singular_name' => __('HTML5 Blank Custom Post', 'woopstrapblank'),
-            'add_new' => __('Add New', 'woopstrapblank'),
-            'add_new_item' => __('Add New HTML5 Blank Custom Post', 'woopstrapblank'),
-            'edit' => __('Edit', 'woopstrapblank'),
-            'edit_item' => __('Edit HTML5 Blank Custom Post', 'woopstrapblank'),
-            'new_item' => __('New HTML5 Blank Custom Post', 'woopstrapblank'),
-            'view' => __('View HTML5 Blank Custom Post', 'woopstrapblank'),
-            'view_item' => __('View HTML5 Blank Custom Post', 'woopstrapblank'),
-            'search_items' => __('Search HTML5 Blank Custom Post', 'woopstrapblank'),
-            'not_found' => __('No HTML5 Blank Custom Posts found', 'woopstrapblank'),
-            'not_found_in_trash' => __('No HTML5 Blank Custom Posts found in Trash', 'woopstrapblank')
-        ),
-        'public' => true,
-        'hierarchical' => true, // Allows your posts to behave like Hierarchy Pages
-        'has_archive' => true,
-        'supports' => array(
-            'title',
-            'editor',
-            'excerpt',
-            'thumbnail'
-        ), // Go to Dashboard Custom HTML5 Blank post for supports
-        'can_export' => true, // Allows export in Tools > Export
-        'taxonomies' => array(
-            'post_tag',
-            'category'
-        ) // Add Category and Post Tags support
-    ));
-}
+require_once "modules/custom-post-specialist.php";
+require_once "modules/custom-post-glossary.php";
+
 
 /*------------------------------------*\
     ShortCode Functions
@@ -484,3 +655,10 @@ function html5_shortcode_demo_2($atts, $content = null) // Demo Heading H2 short
 {
     return '<h2>' . $content . '</h2>';
 }
+
+
+
+
+require_once "modules/shortcodes.php";
+
+require_once "modules/acf-config.php";
