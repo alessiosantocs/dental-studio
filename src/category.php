@@ -13,6 +13,24 @@ function curPageURL() {
 }
 
 
+// Fix: Redirect categories with url too short
+// Example: /dentista-dei-bambini => /le-nostre-specialita/adec-bambini/dentista-dei-bambini
+	$cat = get_query_var('cat');
+	$current_category = get_category($cat);
+
+	$pageURL = curPageURL();
+	$pageURL = str_replace('http://adec', 'http://www.adec', $pageURL);
+	$cat_link = get_category_link($current_category->cat_ID);
+
+	// print_r($pageURL);
+	// print_r($cat_link);
+
+	// If the page url is not the standard/correct one
+	if ($pageURL !== $cat_link) {
+		header("HTTP/1.1 301 Moved Permanently");
+		header("Location: $cat_link");
+	}
+// End fix.
 
 // Force redirect if
 $pageURL = curPageURL();
